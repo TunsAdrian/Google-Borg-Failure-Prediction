@@ -24,8 +24,7 @@ message Resources {
   optional float memory = 2;  // Normalized RAM bytes.
 }
 
-// Collections are either jobs (which have tasks) or alloc sets (which have
-// alloc instances).
+// Collections are either jobs (which have tasks) or alloc sets (which have alloc instances).
 enum CollectionType {
   JOB = 0;
   ALLOC_SET = 1;
@@ -36,34 +35,28 @@ enum CollectionType {
 enum EventType {
   // The collection or instance was submitted to the scheduler for scheduling.
   SUBMIT = 0;
-  // The collection or instance was marked not eligible for scheduling by the
-  // batch scheduler.
+  // The collection or instance was marked not eligible for scheduling by the batch scheduler.
   QUEUE = 1;
   // The collection or instance became eligible for scheduling.
   ENABLE = 2;
   // The collection or instance started running.
   SCHEDULE = 3;
-  // The collection or instance was descheduled because of a higher priority
-  // collection or instance, or because the scheduler overcommitted resources.
+  // The collection or instance was descheduled because of a higher priority collection or instance, or because the scheduler overcommitted resources.
   EVICT = 4;
   // The collection or instance was descheduled due to a failure.
   FAIL = 5;
   // The collection or instance completed normally.
   FINISH = 6;
-  // The collection or instance was cancelled by the user or because a
-  // depended-upon collection died.
+  // The collection or instance was cancelled by the user or because depended-upon collection died.
   KILL = 7;
-  // The collection or instance was presumably terminated, but due to missing
-  // data there is insufficient information to identify when or how.
+  // The collection or instance was presumably terminated, but due to missing data there is insufficient information to identify when or how.
   LOST = 8;
-  // The collection or instance was updated (scheduling class or resource
-  // requirements) while it was waiting to be scheduled.
+  // The collection or instance was updated (scheduling class or resource requirements) while it was waiting to be scheduled.
   UPDATE_PENDING = 9;
   // The collection or instance was updated while it was scheduled somewhere.
   UPDATE_RUNNING = 10;
 }
-// Represents reasons why we synthesized a scheduler event to replace
-// apparently missing data.
+// Represents reasons why we synthesized a scheduler event to replace apparently missing data.
 enum MissingType {
   MISSING_TYPE_NONE = 0;  // No data was missing.
   SNAPSHOT_BUT_NO_TRANSITION = 1;
@@ -105,8 +98,7 @@ enum VerticalScalingSetting {
   VERTICAL_SCALING_FULLY_AUTOMATED = 3;
 }
 
-// A constraint represents a request for a thing to be placed on a machine
-// (or machines) with particular attributes.
+// A constraint represents a request for a thing to be placed on a machine (or machines) with particular attributes.
 message MachineConstraint {
   // Comparison operation between the supplied value and the machine's value.
   // For EQUAL and NOT_EQUAL relationships, the comparison is a string
@@ -133,9 +125,7 @@ message MachineConstraint {
   optional Relation relation = 3;
 }
 
-// Instance and collection events both share a common prefix, followed by
-// specific fields. Information about an instance event (task or alloc
-// instance).
+// Instance and collection events both share a common prefix, followed by specific fields. Information about an instance event (task or alloc instance).
 message InstanceEvent {
   // Common fields shared between instances and collections.
 
@@ -160,11 +150,9 @@ message InstanceEvent {
   // Begin: fields specific to instances
   // The index of the instance in its collection (starts at 0).
   optional int32 instance_index = 9;
-  // The ID of the machine on which this instance is placed (or NO_MACHINE if
-  // not placed on one, or DEDICATED_MACHINE if it's on a dedicated machine).
+  // The ID of the machine on which this instance is placed (or NO_MACHINE if not placed on one, or DEDICATED_MACHINE if it's on a dedicated machine).
   optional int64 machine_id = 10;
-  // (Tasks only) The index of the alloc instance that this task is running in,
-  // or NO_ALLOC_INDEX if it is not running in an alloc.
+  // (Tasks only) The index of the alloc instance that this task is running in, or NO_ALLOC_INDEX if it is not running in an alloc.
   optional int32 alloc_instance_index = 11;
   // The resources requested when the instance was submitted or last updated.
   optional Resources resource_request = 12;
@@ -190,8 +178,7 @@ message CollectionEvent {
   optional CollectionType collection_type = 6;
   // Cluster-level scheduling priority for the collection.
   optional int32 priority = 7;
-  // The ID of the alloc set that this job is to run in, or NO_ALLOC_COLLECTION
-  // (only for jobs).
+  // The ID of the alloc set that this job is to run in, or NO_ALLOC_COLLECTION (only for jobs).
   optional int64 alloc_collection_id = 8;
 
   // Fields specific to a collection.
@@ -207,11 +194,9 @@ message CollectionEvent {
   optional int64 parent_collection_id = 12;
   // IDs of collections that must finish before this collection may start.
   repeated int64 start_after_collection_ids = 13;
-  // Maximum number of instances of this collection that may be placed on
-  // one machine (or 0 if unlimited).
+  // Maximum number of instances of this collection that may be placed on one machine (or 0 if unlimited).
   optional int32 max_per_machine = 14;
-  // Maximum number of instances of this collection that may be placed on
-  // machines connected to a single Top of Rack switch (or 0 if unlimited).
+  // Maximum number of instances of this collection that may be placed on machines connected to a single Top of Rack switch (or 0 if unlimited).
   optional int32 max_per_switch = 15;
   // How/whether vertical scaling should be done for this collection.
   optional VerticalScalingSetting vertical_scaling = 16;
@@ -219,8 +204,7 @@ message CollectionEvent {
   optional Scheduler scheduler = 17;
 }
 
-// Machine events describe the addition, removal, or update (change) of a
-// machine in the cluster at a particular time.
+// Machine events describe the addition, removal, or update (change) of a machine in the cluster at a particular time.
 message MachineEvent {
   enum EventType {
     // Should never happen :-).
@@ -237,9 +221,8 @@ message MachineEvent {
   enum MissingDataReason {
     // No data is missing.
     MISSING_DATA_REASON_NONE = 0;
-    // We observed that a change to the state of a machine must have
-    // occurred from an internal state snapshot, but did not see a
-    // corresponding transition event during the trace.
+    // We observed that a change to the state of a machine must have occurred from an internal state snapshot, but
+    // did not see a corresponding transition event during the trace.
     SNAPSHOT_BUT_NO_TRANSITION = 1;
   }
 
@@ -251,8 +234,7 @@ message MachineEvent {
   optional EventType type = 3;
   // Obfuscated name of the Top of Rack switch that this machine is attached to.
   optional string switch_id = 4;
-  // Available resources that the machine supplies.  (Note: may be smaller
-  // than the physical machine's raw capacity.)
+  // Available resources that the machine supplies.  (Note: may be smaller than the physical machine's raw capacity.)
   optional Resources capacity = 5;
   // An obfuscated form of the machine platform (micro-architecture + motherboard design).
   optional string platform_id = 6;
@@ -274,9 +256,8 @@ message MachineAttribute {
   optional bool deleted = 5;
 }
 
-// Information about resource consumption (usage) during a sample window
-// (which is typically 300s, but may be shorter if the instance started
-// and/or ended during a measurement window).
+// Information about resource consumption (usage) during a sample window (which is typically 300s, but may be shorter
+// if the instance started and/or ended during a measurement window).
 message InstanceUsage {
   // Sample window end points, in microseconds since the start of the trace.
   optional int64 start_time = 1;
@@ -288,27 +269,22 @@ message InstanceUsage {
   // Unique ID of the machine on which the instance has been placed.
   optional int64 machine_id = 5;
 
-  // ID and index of the alloc collection + instance in which this instance
-  // is running, or NO_ALLOC_COLLECTION / NO_ALLOC_INDEX if it is not
-  // running inside an alloc.
+  // ID and index of the alloc collection + instance in which this instance is running, or NO_ALLOC_COLLECTION / NO_ALLOC_INDEX
+  // if it is not running inside an alloc.
   optional int64 alloc_collection_id = 6;
   optional int64 alloc_instance_index = 7;
   // Type of the collection that this instance belongs to.
   optional CollectionType collection_type = 8;
   // Average (mean) usage over the measurement period.
   optional Resources average_usage = 9;
-  // Observed maximum usage over the measurement period.
-  // This measurement may be fully or partially missing in some cases.
+  // Observed maximum usage over the measurement period. This measurement may be fully or partially missing in some cases.
   optional Resources maximum_usage = 10;
-  // Observed CPU usage during a randomly-sampled second within the measurement
-  // window. (No memory data is provided here.)
+  // Observed CPU usage during a randomly-sampled second within the measurement window. (No memory data is provided here.)
   optional Resources random_sample_usage = 11;
 
-  // The memory limit imposed on this instance; normally, it will not be
-  // allowed to exceed this amount of memory.
+  // The memory limit imposed on this instance; normally, it will not be allowed to exceed this amount of memory.
   optional float assigned_memory = 12;
-  // Amount of memory that is used for the instance's file page cache in the OS
-  // kernel.
+  // Amount of memory that is used for the instance's file page cache in the OS kernel.
   optional float page_cache_memory = 13;
 
   // Average (mean) number of processor and memory cycles per instruction.
