@@ -359,3 +359,7 @@ cython_debug/
 data-preprocessing/intermediary_data/
 
 data-preprocessing/result_data/
+
+machine-learning/test_data/
+
+machine-learning/training_data/
