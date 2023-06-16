@@ -356,6 +356,6 @@ cython_debug/
 #.idea/
 
 # USER MADE - Intermediary .parquet files
-intermediary_data/
+data-preprocessing/intermediary_data/
 
-result_data/
+data-preprocessing/result_data/
