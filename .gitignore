@@ -355,11 +355,15 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# USER MADE - Intermediary .parquet files
+# USER MADE - Intermediary .parquet files and saved plots
 data-preprocessing/intermediary_data/
 
 data-preprocessing/result_data/
 
+data-preprocessing/plots
+
 machine-learning/test_data/
 
 machine-learning/training_data/
+
+machine-learning/plots/
