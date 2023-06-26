@@ -360,10 +360,12 @@ data-preprocessing/intermediary_data/
 
 data-preprocessing/result_data/
 
-data-preprocessing/plots
+data-preprocessing/plots/
 
 machine-learning/test_data/
 
 machine-learning/training_data/
 
 machine-learning/plots/
+
+machine-learning/task_models_TML/
